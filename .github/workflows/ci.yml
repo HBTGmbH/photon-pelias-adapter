@@ -41,7 +41,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Publish to Amazon ECR
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: hbt/photon-pelias-adapter
           username: ${{ steps.login-ecr.outputs.username }}
