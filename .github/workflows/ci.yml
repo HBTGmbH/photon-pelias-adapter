@@ -1,9 +1,9 @@
-name: Run tests
+name: Run tests and deploy image
 
 on:
   push:
   pull_request:
-    branches: [master]
+    branches: [trufi]
 
 jobs:
   test:
@@ -25,13 +25,23 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     needs: test
-    if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/trufi' }}
     steps:
       - uses: actions/checkout@v2
-      - name: Publish to Dockerhub
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::313329311652:role/PushContainerImagesGithubActions
+          role-duration-seconds: 900 # the ttl of the session, in seconds.
+          aws-region: eu-central-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Publish to Amazon ECR
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: ${{ github.repository }}
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_AUTH}}
+          name: hbt/photon-pelias-adapter
+          username: ${{ steps.login-ecr.outputs.username }}
+          password: ${{ steps.login-ecr.outputs.password }}
+          registry: ${{ steps.login-ecr.outputs.registry }}
           tags: "latest,${{ github.sha }}"
