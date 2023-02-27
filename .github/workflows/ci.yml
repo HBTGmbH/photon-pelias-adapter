@@ -41,10 +41,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - name: Publish to Amazon ECR
-        uses: elgohr/Publish-Docker-Github-Action@v5
+        uses: docker/build-push-action@v4
         with:
-          name: hbt/photon-pelias-adapter
-          username: ${{ steps.login-ecr.outputs.username }}
-          password: ${{ steps.login-ecr.outputs.password }}
-          registry: ${{ steps.login-ecr.outputs.registry }}
-          tags: "latest,${{ github.sha }}"
+          context: .
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/hbt/photon-pelias-adapter:latest
+            ${{ steps.login-ecr.outputs.registry }}/hbt/photon-pelias-adapter:${{ github.sha }}
