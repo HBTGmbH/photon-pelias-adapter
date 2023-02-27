@@ -1,1 +1,11 @@
 /node_modules
+/.*
+**/build/
+!**/src/**
+
+src/main/resources/report
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+**/out/
