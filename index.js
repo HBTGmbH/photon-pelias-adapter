@@ -31,19 +31,19 @@ function search(params, res) {
   let focusParam = null;
 
   //ignore GTFS stop requests. Used by digitransit
-  if (
-    params["sources"] &&
-    params["sources"].split(",").length == 1 &&
-    params["sources"].split(",")[0].startsWith("gtfs")
-  ) {
-    res.writeHead(404, {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    });
-    res.write(JSON.stringify({ error: "no gtfs", features: [] }));
-    res.end();
-    return;
-  }
+  // if (
+  //   params["sources"] &&
+  //   params["sources"].split(",").length === 1 &&
+  //   params["sources"].split(",")[0].startsWith("gtfs")
+  // ) {
+  //   res.writeHead(404, {
+  //     "Content-Type": "application/json",
+  //     "Access-Control-Allow-Origin": "*"
+  //   });
+  //   res.write(JSON.stringify({ error: "no gtfs", features: [] }));
+  //   res.end();
+  //   return;
+  // }
 
   if (
     params["boundary.rect.min_lat"] &&
